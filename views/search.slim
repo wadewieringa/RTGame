@@ -1,0 +1,54 @@
+p Player 1 Score: #{@@player1_score} / Player 2 Score: #{@@player2_score}
+
+table 
+	tr
+		td
+			img src='#{@@movie1.posters['thumbnail']}'
+		td
+			 <i> #{@@movie1['title']} </i><br>
+			 == @@movie1['year']
+	tr	
+		td
+			p <b>Critics Rating:</b> 
+		td
+			== @@movie1.ratings['critics_rating']
+			<br>
+			== @@movie1.ratings['critics_score']
+	tr	
+		td
+			p <b>Audience Rating:</b> 
+		td
+			== @@movie1.ratings['audience_rating']
+			<br>
+			== @@movie1.ratings['audience_score']
+
+table
+	tr
+		td
+			h3 Player 1: 
+	tr
+		td
+			h4 Guess:
+		td
+			=@guess1
+		td
+			h4 Score:
+		td
+			=@@player1_round_score
+	tr
+		td
+			h3 Player 2: 
+	tr
+		td
+			h4 Guess:
+		td
+			=@guess2
+		td
+			h4 Score:
+		td
+			=@@player2_round_score
+
+p
+a href='/' Guess 2
+p
+a href='/' Back

@@ -1,0 +1,16 @@
+p Player 1 Score: #{@@player1_score} / Player 2 Score: #{@@player2_score}
+
+img src='#{@@movie1.posters['thumbnail']}'
+<i> #{@@movie1['title']} </i><br>
+== @@movie1['year']
+
+
+
+form action='/search' method='post'
+	p Enter A Guess:
+	h3 Player 1:
+	input type='text' size='3' name='player1'
+	h3 Player 2:
+	input type='text' size='3' name='player2'
+	p
+		button type='submit' Guess
