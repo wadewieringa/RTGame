@@ -1,7 +1,6 @@
 require 'rubygems'
 require 'sinatra'
 require 'slim'
-require 'sinatra/reloader' if development?
 require "rotten"
 Rotten.api_key = 'vmfntfj7qgd3hybe6m5xq45b'
 
