@@ -1,16 +1,28 @@
-p Player 1 Score: #{@@player1_score} / Player 2 Score: #{@@player2_score}
+div class='row'
+	div class='col-md-3'
+		div class='row' style='padding-top: 75px;'
+			div class='panel panel-default'
+				div class='panel-body'
+					div class='col-md-3'
+						img src='#{@@movie[@@i].posters['thumbnail']}'
+					div class='col-md-9'
+						b #{@@movie[@@i]['title']} <br>
+						i #{@@movie[@@i]['year']}
 
-img src='#{@@movie1.posters['thumbnail']}'
-<i> #{@@movie1['title']} </i><br>
-== @@movie1['year']
 
-
-
-form action='/search' method='post'
-	p Enter A Guess:
-	h3 Player 1:
-	input type='text' size='3' name='player1'
-	h3 Player 2:
-	input type='text' size='3' name='player2'
-	p
-		button type='submit' Guess
+	div class='col-md-9'
+		div class='panel panel-default'
+			div class='panel-heading'
+				h4 class='panel-title' Movie #{@@i + 1} Guess
+			div class='panel-body' 
+				form action='/submit_guess' method='post' role='form'
+					-@@player.each do |x|
+						div class='form-group'
+							label for='#{x.name}' #{x.name} 
+							input type='text' name='#{x.name}' class='form-control'
+					end
+					p
+					button type='submit' class='btn btn-default' Guess
+			div class='panel-footer'
+				div class='progress'
+					div class='progress-bar progress-bar-striped' role='progressbar' aria-valuemin='20' aria-valuemax='100' style='width: #{((@@i + 1) / 5.0) * 100}%;' Movie #{@@i + 1} / 5

@@ -1,0 +1,25 @@
+-@@player_sorted = player_sort()
+div class='row'
+	div class='col-md-3'
+	div class='col-md-8'
+		div class='panel panel-danger'	
+			div class='panel-heading'
+				h4 class='panel-title'	Final Scores
+			div class='panel-body'		
+				table class='table table-hover'
+					tr
+						th Name
+						th Final Score
+					tr
+					-@@player_sorted.each do |z|
+						td #{z.name}
+						td #{z.total_score}
+						tr
+							td colspan='2'
+								div class='progress'
+									div class='progress-bar #{bar_color(z.total_score)}' role='progressbar' style='width: #{(z.total_score/500.0)*100.0}%;' #{z.name}
+						tr
+					end
+				form role='form' action='/reset'
+					button type='submit' class='btn btn-success' New Game
+	div class='col-md-3'

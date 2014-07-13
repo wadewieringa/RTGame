@@ -1,8 +1,10 @@
-p Lets Play The Rotten Tomato Game
+div class='row'
+	div class='col-md-3' 
+	div class='col-md-6' 
+		div class='page-header'
+			h4 style='align: center;' The Rotten Tomato Game <small>Let's Play</small>
 
-form action='/' method='post'
-	p Enter A Title:
-	input type='text' size='100' name='title1'
-		button type='submit' Search
-
+		form role='form' action='/players'
+			button type='submit' class='btn btn-danger' New Game
+	div class='col-md-3' 
 
