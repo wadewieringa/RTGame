@@ -66,12 +66,16 @@ div class='row'
 			p <i> Proceed to Movie #{@@i + 1} / 5 </i>
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Next Movie
-		-elsif @@i == 5 && tie() == false
+				
+		-elsif @@i == 5 && no_tie() == false
 			p Bonus Round
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Tie Breaker
+		-elsif @@i == 5 && no_tie()
+			form role='form' action='/score'
+				button type='submit' class='btn btn-danger' Final Scores
+			form role='form' action='/guess'
+				button type='submit' class='btn btn-default' Play 6th Bonus Round
 		-else
 			form role='form' action='/score'
 				button type='submit' class='btn btn-danger' Final Scores
-
-

@@ -3,7 +3,19 @@ div class='row'
 	div class='col-md-6' 
 		div class='page-header'
 			h4 style='align: center;' The Rotten Tomato Game <small>Let's Play</small>
-
+		div class='jumbotron'
+			h4 How to Play:
+			p The goal of the game is to finish with the lowest score possible, just like golf.
+			p Six movies are to be chosen by the players, and the game begins.
+			p Each round players guess the "Critics Rating" the movie earned on Rotten Tomatoes.
+			p If a movie had a "Critics Rating" of 60%
+			ul
+				li A guess of 70% would score 10 points
+				li A guess of 60% would score 0 points
+				li A guess of 50% would score 10 points
+			p At the end, players scores are tallied, and a winner emerges.
+			p There is a 6th movie in case of a tie
+			
 		form role='form' action='/players'
 			button type='submit' class='btn btn-danger' New Game
 	div class='col-md-3' 

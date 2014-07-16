@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'slim'
+require 'sinatra/reloader' if development?
 require "rotten"
 Rotten.api_key = 'vmfntfj7qgd3hybe6m5xq45b'
 
@@ -29,6 +30,7 @@ class Player
 		@round_score = 0
 		@total_score = 0
 	end
+
 	
 end
 
@@ -40,6 +42,7 @@ helpers do
 
 	#New game function.  Makes set number of player classes in @@player array.
 	def new_game(players) 
+		@@i = 0 
 		@@player = []
 		players.times do |x|
 			@@player[x] = Player.new
@@ -74,7 +77,7 @@ helpers do
 	end
 
 	#Check if there is a tie score
-	def tie()
+	def no_tie()
 		@final_scores = []
 		@@player.each { |x| @final_scores << x.total_score }
 		@final_scores.uniq == @final_scores
@@ -82,11 +85,11 @@ helpers do
 
 	#Assign Color to progress bar on score page
 	def bar_color(score)
-		if score < 100
+		if score < 50
 			"progress-bar-danger"
-		elsif 100 <= score  && score < 200
+		elsif 50 <= score  && score < 100
 			"progres-bar-warning"
-		elsif 200 <= score && score < 350
+		elsif 100 <= score && score < 150
 			"progress-bar-info"
 		else
 			"progress-bar-success"
@@ -108,6 +111,7 @@ get '/players' do
 end
 
 post '/numplayers' do
+	new_game(params[:numplayers].to_i)
 	slim :names
 end
 
