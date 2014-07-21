@@ -1,37 +1,21 @@
 require 'rubygems'
 require 'sinatra'
 require 'slim'
-require 'sinatra/reloader' if development?
 require "rotten"
 Rotten.api_key = 'vmfntfj7qgd3hybe6m5xq45b'
 
-=begin
+
 use Rack::Session::Pool
-
-get '/count' do
-  session[:count] ||= 0
-  session[:count] +=1
-  "Count: #{session[:count]}"
-end
-
-get '/reset' do
-  session.clear
-  "Count reset to 0."
-end
-
-=end
+set :session_secret, 'master-key'
 
 #Class For New Players
 class Player
 	attr_accessor :name, :guess, :round_score, :total_score
-
 	def initialize 
 		@guess = 0
 		@round_score = 0
 		@total_score = 0
 	end
-
-	
 end
 
 helpers do
@@ -40,32 +24,26 @@ helpers do
 		Rotten::Movie.search(title)[0]
 	end
 
-	#New game function.  Makes set number of player classes in @@player array.
+	#New game function.  Starts counting rounds and creates new players using session variables
 	def new_game(players) 
-		@@i = 0 
-		@@player = []
-		players.times do |x|
-			@@player[x] = Player.new
-			@@player[x].name = "Player#{x}"
+		session.clear
+		session[:round_count] = 0
+		session[:player] = Array.new
+		params[:numplayers].to_i.times do |x|
+			session[:player][x] = Player.new
+			session[:player][x].name = "Player#{x}"
 		end
 	end
 
-	#Reset player scores and round counter
-	def reset_game()
-		@@player.each do |x|
-			x.total_score = 0
-		end
-		@@i = 0 
-	end
 
-	#Calculates each players score based guess
+	#Calculates each players score based on guess
 	def player_score()
-		params.each do |x, y|
-			@@player.each do |z|
-				if z.name == x 
-					z.guess = y.to_i
-					z.round_score = (y.to_i - @@movie[@@i].ratings['critics_score'].to_i).abs
-					z.total_score += (y.to_i - @@movie[@@i].ratings['critics_score'].to_i).abs
+		params.each do |name, guess| #recieves guess from form on guess.slim
+			session[:player].each do |z|
+				if z.name ==  name
+					z.guess = guess.to_i
+					z.round_score = (guess.to_i - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
+					z.total_score += (guess.to_i - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
 				end
 			end
 		end
@@ -73,13 +51,13 @@ helpers do
 
 	#Sorts players by score
 	def player_sort()
-		@@player.sort {|a, b| a.total_score <=> b.total_score }
+		session[:player].sort {|a, b| a.total_score <=> b.total_score }
 	end
 
 	#Check if there is a tie score
 	def no_tie()
 		@final_scores = []
-		@@player.each { |x| @final_scores << x.total_score }
+		session[:player].each { |x| @final_scores << x.total_score }
 		@final_scores.uniq == @final_scores
 	end
 
@@ -96,11 +74,20 @@ helpers do
 		end
 	end
 
+	#Retrieve moviess with Rotten API and store in session array
+	def movie_titles(params)
+		session[:movie] ||= Array.new
+		params.each do |x, y|
+			session[:movie] << retrieve_movie(y)
+		end
+	end
+
+	#Assigns player names from form submission
+	def assign_names()
+		params.each { |number, name| session[:player][number.to_i].name = name }
+	end
 
 end
-
-#Round counting variable
-@@i = 0
 
 get '/' do
 	slim :home
@@ -120,18 +107,18 @@ post '/names' do
 end
 
 post '/titles' do
-	@@movie = Array.new
-	params.each do |x, y|
-		@@movie << retrieve_movie(y)
-	end
+	movie_titles(params)
+	@movie = session[:movie][session[:round_count]]
 	slim :guess
 end
 
 get '/guess' do
+	@movie = session[:movie][session[:round_count]]
 	slim :guess
 end
 
 post '/submit_guess' do
+	@movie = session[:movie][session[:round_count]]
 	slim :search
 end
 
@@ -139,8 +126,5 @@ get '/score' do
 	slim :score
 end
 
-get '/reset' do
-	reset_game()
-	redirect to('/')
-end
+
 

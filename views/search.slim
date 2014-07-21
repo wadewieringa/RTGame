@@ -1,43 +1,43 @@
 -player_score()
--@@movie[@@i].ratings['audience_score'] >= 60 ? @@audience_rotten = "progress-bar-danger" : @@audience_rotten = "progress-bar-success"
--@@movie[@@i].ratings['critics_score'] >= 60 ? @@critics_rotten = "progress-bar-danger" : @@critics_rotten = "progress-bar-success"
+-@movie.ratings['audience_score'] >= 60 ? @audience_rotten = "progress-bar-danger" : @audience_rotten = "progress-bar-success"
+-@movie.ratings['critics_score'] >= 60 ? @critics_rotten = "progress-bar-danger" : @critics_rotten = "progress-bar-success"
 
 div class='row'
 	div class='col-md-4'
 		div class='panel panel-default'
 			div class='panel-heading' 
-				h4 class='panel-title' Movie #{@@i + 1}
+				h4 class='panel-title' Movie #{session[:round_count] + 1}
 			div class='panel-body' 
 				table class='table'
 					tr
 						td
-							img src='#{@@movie[@@i].posters['thumbnail']}'
+							img src='#{@movie.posters['thumbnail']}'
 						td
-							 b #{@@movie[@@i]['title']} <br>
-							 i #{@@movie[@@i]['year']} 
+							 b #{@movie['title']} <br>
+							 i #{@movie['year']} 
 					
 					tr	
 						td
 							p <b>Critics Rating:</b> 
 						td
-							b #{@@movie[@@i].ratings['critics_score']}
+							b #{@movie.ratings['critics_score']}
 							<br>
-							i #{@@movie[@@i].ratings['critics_rating']}
+							i #{@movie.ratings['critics_rating']}
 					tr
 						td colspan='2'
 							div class='progress' 
-								div class='progress-bar #{@@critics_rotten}' role='progressbar' style='width: #{@@movie[@@i].ratings['critics_score']}%;' Critics
+								div class='progress-bar #{@critics_rotten}' role='progressbar' style='width: #{@movie.ratings['critics_score']}%;' Critics
 					tr	
 						td
 							p <b>Audience Rating:</b> 
 						td
-							b #{@@movie[@@i].ratings['audience_score']}
+							b #{@movie.ratings['audience_score']}
 							<br>
-							i #{@@movie[@@i].ratings['audience_rating']}
+							i #{@movie.ratings['audience_rating']}
 					tr
 						td colspan='2'
 							div class='progress'
-								div class='progress-bar #{@@audience_rotten}' role='progressbar' style='width: #{@@movie[@@i].ratings['audience_score']}%;' Audience
+								div class='progress-bar #{@audience_rotten}' role='progressbar' style='width: #{@movie.ratings['audience_score']}%;' Audience
 
 	div class='col-md-8'				
 		div class='panel panel-default'
@@ -50,7 +50,7 @@ div class='row'
 						th Guess
 						th Round Score
 					tr
-					-@@player.each do |z|
+					-session[:player].each do |z|
 						td #{z.name}
 						td #{z.guess}
 						td #{z.round_score}
@@ -58,20 +58,20 @@ div class='row'
 					end
 			div class='panel-footer'
 				div class='progress'
-					div class='progress-bar progress-bar-striped' role='progressbar' aria-valuemin='20' aria-valuemax='100' style='width: #{((@@i + 1) / 5.0) * 100}%;' Movie #{@@i + 1} / 5
+					div class='progress-bar progress-bar-striped' role='progressbar' aria-valuemin='20' aria-valuemax='100' style='width: #{((session[:round_count] + 1) / 5.0) * 100}%;' Movie #{session[:round_count] + 1} / 5
 
-		- @@i += 1
-		
-		-if @@i < 5 
-			p <i> Proceed to Movie #{@@i + 1} / 5 </i>
+		- session[:round_count] += 1
+
+		-if session[:round_count] < 5 
+			p <i> Proceed to Movie #{session[:round_count] + 1} / 5 </i>
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Next Movie
 				
-		-elsif @@i == 5 && no_tie() == false
+		-elsif session[:round_count] == 5 && no_tie() == false
 			p Bonus Round
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Tie Breaker
-		-elsif @@i == 5 && no_tie()
+		-elsif session[:round_count] == 5 && no_tie()
 			form role='form' action='/score'
 				button type='submit' class='btn btn-danger' Final Scores
 			form role='form' action='/guess'
