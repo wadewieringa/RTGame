@@ -1,15 +1,18 @@
 doctype html
 html lang="en"
 	head
-		title== "Rotten Tomatoes Game"
+		title== @page_title || "Rotten Tomatoes Game" 
 		meta charset="utf-8"
+		<link href="http://fonts.googleapis.com/css?family=Lobster" rel="stylesheet" type="text/css">
+		 <link href="http://fonts.googleapis.com/css?family=Cabin" rel="stylesheet" type="text/css">
 		link rel="stylesheet" href="/bootstrap.min.css"
-	body 
+		link rel='stylesheet' href='/custom.css'
+	body class='fullscreen-background'
 		header
-			div class='container-fluid' style='background-color: grey; opacity: 0.7; margin-bottom: 75px;'
+			div class='container-fluid header-menu'
 				div class='row'
 					div class='col-md-12'
-						h1 style='padding-left: 75px; color: red; border-style: solid; border-width: 3px;' The Rotten Tomatoes Game
+						h1 class='header-title' Rotten or Fresh
 		section 
-			div class='container' 
+			div class='container content-box' 
 				== yield

@@ -3,7 +3,8 @@ require 'sinatra'
 require 'slim'
 require "rotten"
 Rotten.api_key = 'vmfntfj7qgd3hybe6m5xq45b'
-
+require 'sinatra/reloader' if development?
+#require 'pry'
 
 use Rack::Session::Pool
 set :session_secret, 'master-key'

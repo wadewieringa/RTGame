@@ -1,7 +1,8 @@
--assign_names()
+-@page_title = 'Titles | Rotten or Fresh'
+- assign_names()
 div class='row'
 	div class='col-md-9' 
-		div class='panel panel-default'
+		div class='panel panel-danger'
 			div class='panel-heading'
 				div class='panel-title'
 					h4 class='panel-title' Please Choose your movies:
@@ -15,7 +16,7 @@ div class='row'
 						button type='submit' class='btn btn-default' Search
 	
 	div class='col-md-3'
-		div class='panel panel-default'
+		div class='panel panel-danger'
 			div class='panel-heading'
 				div class='panel-title'
 					h4 class='panel-title' Players
@@ -25,7 +26,7 @@ div class='row'
 						th Name
 						th Score
 					tr
-						-session[:player].each do |x|
+						- session[:player].each do |x|
 							td #{x.name}
 							td #{x.total_score}
 							tr

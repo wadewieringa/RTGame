@@ -1,4 +1,5 @@
--@player_sorted = player_sort()
+-@page_title = 'Final Score | Rotten or Fresh'
+- @player_sorted = player_sort()
 div class='row'
 	div class='col-md-3'
 	div class='col-md-8'
@@ -11,7 +12,7 @@ div class='row'
 						th Name
 						th Final Score
 					tr
-					-@player_sorted.each do |z|
+					- @player_sorted.each do |z|
 						td #{z.name}
 						td #{z.total_score}
 						tr

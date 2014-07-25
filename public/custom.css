@@ -1,0 +1,41 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Lobster', Georgia, Times, serif;
+}
+p, div {
+    font-family: 'Cabin', Helvetica, Arial, sans-serif;
+}
+
+header {
+	background: url(gplaypattern.png) repeat 0 0;
+}
+.header-menu {
+	background-color: grey; 
+	opacity: 0.7; 
+	margin-bottom: 50px;
+}
+.header-title {
+	padding-left: 75px; 
+	color: red; 
+	border-style: solid; 
+	border-color: black;
+	border-width: 3px;
+}
+.fullscreen-background {
+background-position: center;
+background-attachment: fixed;
+background-repeat: no-repeat;
+background-size: cover;
+}
+body {
+background-image: url(tomato_background.jpg);
+}
+.content-box {
+	background: url(gplaypattern.png) repeat 0 0;
+	padding-top: 75px;
+	padding-bottom: 75px;
+	border-style: solid;
+	border-width: 3px;
+}
+.jumbotron {
+	
+}

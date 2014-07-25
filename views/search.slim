@@ -1,10 +1,11 @@
--player_score()
--@movie.ratings['audience_score'] >= 60 ? @audience_rotten = "progress-bar-danger" : @audience_rotten = "progress-bar-success"
--@movie.ratings['critics_score'] >= 60 ? @critics_rotten = "progress-bar-danger" : @critics_rotten = "progress-bar-success"
+-@page_title = 'Score | Rotten or Fresh'
+- player_score()
+- @movie.ratings['audience_score'] >= 60 ? @audience_rotten = "progress-bar-danger" : @audience_rotten = "progress-bar-success"
+- @movie.ratings['critics_score'] >= 60 ? @critics_rotten = "progress-bar-danger" : @critics_rotten = "progress-bar-success"
 
 div class='row'
 	div class='col-md-4'
-		div class='panel panel-default'
+		div class='panel panel-danger'
 			div class='panel-heading' 
 				h4 class='panel-title' Movie #{session[:round_count] + 1}
 			div class='panel-body' 
@@ -38,9 +39,28 @@ div class='row'
 						td colspan='2'
 							div class='progress'
 								div class='progress-bar #{@audience_rotten}' role='progressbar' style='width: #{@movie.ratings['audience_score']}%;' Audience
+					tr
+						td  
+							a href='#{@movie.links["alternate"]}' Rotten Tomatoes
+						td
+							a href='http://www.imdb.com/title/tt#{@movie.alternate_ids["imdb"]}' IMDB
+		div class='panel panel-danger'
+			div class='panel-heading' 
+				h4 class='panel-title' Actors
+			div class='panel-body' 
+				table class='table'
+					tr
+					-@movie.abridged_cast.each do |x|
+						td
+							h4 #{x['name']}
+						td
+							p #{(x['characters']).inspect}
+						tr
+					end
+
 
 	div class='col-md-8'				
-		div class='panel panel-default'
+		div class='panel panel-danger'
     		div class='panel-heading'
 				h4 class='panel-title' Scores
 			div class='panel-body' 
@@ -50,7 +70,7 @@ div class='row'
 						th Guess
 						th Round Score
 					tr
-					-session[:player].each do |z|
+					- session[:player].each do |z|
 						td #{z.name}
 						td #{z.guess}
 						td #{z.round_score}
@@ -62,20 +82,20 @@ div class='row'
 
 		- session[:round_count] += 1
 
-		-if session[:round_count] < 5 
+		- if session[:round_count] < 5 
 			p <i> Proceed to Movie #{session[:round_count] + 1} / 5 </i>
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Next Movie
 				
-		-elsif session[:round_count] == 5 && no_tie() == false
+		- elsif session[:round_count] == 5 && no_tie() == false
 			p Bonus Round
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Tie Breaker
-		-elsif session[:round_count] == 5 && no_tie()
+		- elsif session[:round_count] == 5 && no_tie()
 			form role='form' action='/score'
 				button type='submit' class='btn btn-danger' Final Scores
 			form role='form' action='/guess'
 				button type='submit' class='btn btn-default' Play 6th Bonus Round
-		-else
+		- else
 			form role='form' action='/score'
 				button type='submit' class='btn btn-danger' Final Scores
