@@ -11,8 +11,10 @@ set :session_secret, 'master-key'
 
 #Class For New Players
 class Player
-	attr_accessor :name, :guess, :round_score, :total_score
+	attr_accessor :name, :computer, :difficulty, :guess, :round_score, :total_score
 	def initialize 
+		@computer = false
+		@difficulty = 0
 		@guess = 0
 		@round_score = 0
 		@total_score = 0
@@ -34,6 +36,28 @@ helpers do
 			session[:player][x] = Player.new
 			session[:player][x].name = "Player#{x}"
 		end
+		#Add Computer Player
+		if params[:computer_easy] == "yes"
+			computerPlayer = Player.new
+			computerPlayer.name = "Fake Teresa"
+			computerPlayer.computer = true
+			computerPlayer.difficulty = 0
+			session[:player] << computerPlayer
+		end
+		if params[:computer_medium] == "yes"
+			computerPlayer = Player.new
+			computerPlayer.name = "Cheery Adam"
+			computerPlayer.computer = true
+			computerPlayer.difficulty = 1
+			session[:player] << computerPlayer
+		end
+		if params[:computer_hard] == "yes"
+			computerPlayer = Player.new
+			computerPlayer.name = "Hairy Brian"
+			computerPlayer.computer = true
+			computerPlayer.difficulty = 2
+			session[:player] << computerPlayer
+		end
 	end
 
 
@@ -43,11 +67,40 @@ helpers do
 			session[:player].each do |z|
 				if z.name ==  name
 					z.guess = guess.to_i
-					z.round_score = (guess.to_i - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
-					z.total_score += (guess.to_i - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
+					z.round_score = (z.guess - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
+					z.total_score += (z.guess - session[:movie][session[:round_count]].ratings['critics_score'].to_i).abs
 				end
 			end
 		end
+	end
+
+	#New Method For Computer Player
+	def computer_score(computer)
+		@criticsScore = session[:movie][session[:round_count]].ratings['critics_score'].to_i
+		#Scoring Logic
+		case computer.difficulty
+		when 0
+			computer.guess = rand(1..100)
+			computer.round_score = (computer.guess - @criticsScore).abs
+			computer.total_score += (computer.guess - @criticsScore).abs
+		when 1
+			@lower = @criticsScore - 25
+			@upper = @criticsScore + 25
+			@lower = @lower < 0 ? 0 : @lower
+			@upper = @upper > 100 ? 100 : @upper
+			computer.guess = rand(@lower..@upper)
+			computer.round_score = (computer.guess - @criticsScore).abs
+			computer.total_score += (computer.guess - @criticsScore).abs
+		when 2
+			@lower = @criticsScore - 15
+			@upper = @criticsScore + 15
+			@lower = @lower < 0 ? 0 : @lower
+			@upper = @upper > 100 ? 100 : @upper
+			computer.guess = rand(@lower..@upper)
+			computer.round_score = (computer.guess - @criticsScore).abs
+			computer.total_score += (computer.guess - @criticsScore).abs
+		end
+
 	end
 
 	#Sorts players by score
