@@ -46,7 +46,7 @@ helpers do
 		end
 		if params[:computer_medium] == "yes"
 			computerPlayer = Player.new
-			computerPlayer.name = "Cheery Adam"
+			computerPlayer.name = "Pete Corolla"
 			computerPlayer.computer = true
 			computerPlayer.difficulty = 1
 			session[:player] << computerPlayer
